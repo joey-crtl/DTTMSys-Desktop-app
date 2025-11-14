@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookings - Admin Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="bookings.css" />
+  <link rel="stylesheet" href="navigation.css" />
+  <link rel="stylesheet" href="modal.css" />
+
+  <!-- Icons & Fonts -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+
+<body>
+  <!-- Title bar -->
+  <div class="titlebar">
+    <div class="title">Doctor Travel & Tours Reservation System</div>
+    <div class="window-buttons">
+      <button onclick="api.minimize()">🗕</button>
+      <button onclick="api.maximize()">🗖</button>
+      <button onclick="api.close()">✖</button>
+    </div>
+  </div>
+
+  <div class="scrollable-content">
+    <!-- Top bar -->
+    <div class="top-bar">
+      <h1>Doctor Travel & Tours Reservation System</h1>
+    </div>
+
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="aside">
+        <div class="top">
+          <div class="logo"><h2>Menu</h2></div>
+        </div>
+
+        <div class="sidebar">
+          <a href="dashboard.html"><span class="material-symbols-sharp">grid_view</span><h3>Dashboard</h3></a>
+          <a href="package.html"><span class="material-symbols-sharp">luggage</span><h3>International Packages</h3></a>
+          <a href="local_package.html"><span class="material-symbols-sharp">luggage</span><h3>Local Packages</h3></a>
+          <a href="schedule.html"><span class="material-symbols-sharp">calendar_month</span><h3>Schedule</h3></a>
+          <a href="bookings.html" class="active"><span class="material-symbols-sharp">receipt_long</span><h3>Bookings</h3></a>
+          <a href="feedback.html"><span class="material-symbols-sharp">comment</span><h3>Feedback</h3></a>
+          <a href="blogs.html"><span class="material-symbols-sharp">article</span><h3>Blogs</h3></a>
+          <a href="#" onclick="logout()"><span class="material-symbols-sharp">logout</span><h3>Logout</h3></a>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main>
+        <div class="booking-section">
+          <div class="booking-header">
+            <h1>Booking History</h1>
+            <input type="date" id="datePicker" />
+          </div>
+
+          <!-- Booking Table -->
+          <div class="card booking-table-card">
+            <table class="booking-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Destination</th>
+                  <th>Passengers</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Payment</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <button id="prevBtn">Previous</button>
+            <span id="pageIndicator"></span>
+            <button id="nextBtn">Next</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ✅ Schedule Modal -->
+  <div id="scheduleModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <span class="modal-close" id="closeScheduleModal">&times;</span>
+      <h2>Set Travel Schedule</h2>
+      <div id="scheduleName" style="font-size: 0.9rem; margin-bottom: 10px; color: #555;"></div>
+
+      <div class="datetime-group">
+        <div>
+          <label for="scheduleDate">Travel Date:</label>
+          <input type="date" id="scheduleDate" />
+        </div>
+        <div>
+          <label for="scheduleTime">Travel Time:</label>
+          <input type="time" id="scheduleTime" step="60" />
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button id="confirmScheduleBtn">Confirm</button>
+        <button id="cancelScheduleBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Logout Modal -->
+  <div id="logoutModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <h2>Confirm Logout</h2>
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-buttons">
+        <button id="confirmBtn">Yes</button>
+        <button id="cancelBtn">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+        emailjs.init("tIRbjOPzlE_tlYGoB"); 
+    })();
+    const PH_SMS_API_KEY = "3376|MZHMSlndxpldcx1EkAUQeRpUMR2ypf6xO7t22hKm ";
+  </script>
+  <script src="bookings.js"></script>
+  <script src="modal.js"></script>
+</body>
+</html>

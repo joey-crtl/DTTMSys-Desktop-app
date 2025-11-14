@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="navigation.css">
+  <link rel="stylesheet" href="modal.css">
+  <link rel="stylesheet" href="blogs.css">
+
+  <!-- Icons & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <title>Blogs</title>
+</head>
+
+<body>
+
+  <!-- ✅ SAME TITLEBAR AS DASHBOARD -->
+  <div class="titlebar">
+    <div class="title">Dr. Travel & Tours Reservation System</div>
+    <div class="window-buttons">
+      <button onclick="api.minimize()">🗕</button>
+      <button onclick="api.maximize()">🗖</button>
+      <button onclick="api.close()">✖</button>
+    </div>
+  </div>
+
+  <!-- ✅ SAME SCROLL WRAPPER -->
+  <div class="scrollable-content">
+
+    <!-- ✅ MATCHING TOP BAR -->
+    <div class="top-bar">
+      <h1>Doctor Travel & Tours Blog Manager</h1>
+    </div>
+
+    <div class="container">
+
+      <aside class="aside">
+        <div class="top"><div class="logo"><h2>Menu</h2></div></div>
+
+        <div class="sidebar">
+          <a href="dashboard.html"><span class="material-symbols-sharp">grid_view</span><h3>Dashboard</h3></a>
+          <a href="package.html"><span class="material-symbols-sharp">luggage</span><h3>International Packages</h3></a>
+          <a href="local_package.html"><span class="material-symbols-sharp">luggage</span><h3>Local Packages</h3></a>
+          <a href="schedule.html"><span class="material-symbols-sharp">calendar_month</span><h3>Schedule</h3></a>
+          <a href="bookings.html"><span class="material-symbols-sharp">receipt_long</span><h3>Bookings</h3></a>
+          <a href="feedback.html"><span class="material-symbols-sharp">comment</span><h3>Feedback</h3></a>
+          <a href="blogs.html" class="active"><span class="material-symbols-sharp">article</span><h3>Blogs</h3></a>
+          <a href="#" onclick="logout()"><span class="material-symbols-sharp">logout</span><h3>Logout</h3></a>
+        </div>
+      </aside>
+
+      <main>
+        <div class="blogs-header">
+          <h1>Manage Blogs</h1>
+          <button class="add-blog-btn" onclick="openBlogModal()">+ Add Blog</button>
+        </div>
+
+        <div class="card blogs-table-card">
+          <table class="blogs-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Media</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="blogsList"></tbody>
+          </table>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="blogModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeBlogModal()">&times;</span>
+      <h2>Add New Blog</h2>
+
+      <input id="blogTitle" placeholder="Title" />
+      <textarea id="blogDesc" placeholder="Description"></textarea>
+
+      <label class="upload-label">Upload Image/Video</label>
+      <input type="file" id="blogFile" accept="image/*,video/*" />
+
+      <button id="saveBlogBtn" onclick="saveBlog()">Save Blog</button>
+    </div>
+  </div>
+
+  <script src="blogs.js"></script>
+</body>
+</html>

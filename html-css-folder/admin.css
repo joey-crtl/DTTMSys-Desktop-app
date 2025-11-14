@@ -1,0 +1,420 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Syne', sans-serif;
+}
+    
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Syne', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* avoid double scrollbars */
+    background: #f0f2f5;
+}
+
+/* ================= Container ================= */
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 0; /* remove rounded edges to match window */
+    overflow: hidden;
+    background: #fff;
+}
+
+/* ================= Form container ================= */
+.form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    padding-top: 80px;  
+    background: #fff;
+    position: relative;
+}
+
+.form-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.form-header .logo {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+}
+
+.form-header h2 {
+    font-size: 2rem;
+    color: #0A6D03;
+    -webkit-app-region: no-drag;
+    user-select: none; /* prevents text selection */
+    cursor: pointer;   /* shows it’s clickable */
+}
+
+/* ================= Input fields ================= */
+input {
+    width: 100%;
+    padding: 15px 20px;
+    margin: 12px 0;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    background: #f1f1f1;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+input:focus {
+    border-color: #0A6D03;
+    outline: none;
+    background: #fff;
+}
+
+/* ================= Login button ================= */
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #0A6D03;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.login-btn:hover {
+    background-color: #0E7B04;
+}
+
+.login-btn:active {
+    transform: scale(0.97);
+}
+
+/* ================= Error message ================= */
+.error-message {
+    color: #E74C3C;
+    margin-top: 12px;
+    font-size: 1rem;
+}
+
+/* ================= Overlay container ================= */
+.overlay-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* Overlay panel */
+.overlay-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #fff;
+    z-index: 2;
+}
+
+.overlay-panel h3 {
+    font-size: 1.8rem;
+    color: #0A6D03;
+    margin-bottom: 1rem;
+}
+
+.overlay-panel .pic {
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: -50px;
+    z-index: 3;
+}
+
+/* Decorative circles */
+.overlay-panel .third-circle {
+    position: absolute;
+    top: -120px;
+    left: 80%;
+    width: 400px;
+    height: 400px;
+    background: rgba(10,109,3,0.15);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.overlay-panel::before {
+    content: '';
+    position: absolute;
+    top: -150px;
+    left: 60%;
+    width: 500px;
+    height: 500px;
+    background: rgba(72,202,62,0.15);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* ================= Responsive ================= */
+@media screen and (max-width: 950px) {
+    .container {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .overlay-container {
+        display: none; /* hide the whole overlay */
+    }
+
+    .form-container {
+        width: 100%;
+        padding: 2rem;
+    }
+}
+
+/* ================= Card Header (Buttons) ================= */
+.card-header {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    -webkit-app-region: no-drag; /* ensures buttons are clickable */
+    z-index: 1010;
+}
+
+.card-header button {
+    width: 36px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.card-header button:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.card-header #close-btn:hover {
+  background: #e81123;
+  color: #fff;
+}
+.form-container {
+  padding-top: 60px; /* 🔹 extra space for header buttons */
+}
+.drag-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;  /* height of draggable area */
+    -webkit-app-region: drag;
+    z-index: 1000;
+}
+
+/* -------------------- Modal Styles -------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: fadeInScale 0.3s ease forwards;
+}
+
+/* Close button */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: #0a6d03;
+}
+
+/* Modal inputs and button */
+.modal-content input {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background-color: #0A6D03;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.modal-content button:hover {
+  background-color: #0e8a04;
+}
+
+/* Modal animation */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ================= 2FA Modal Enhancements ================= */
+#twoFAModal .modal-content {
+    background: linear-gradient(145deg, #e6f5e9, #ffffff);
+    padding: 40px 30px;
+    border-radius: 16px;
+    width: 420px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    position: relative;
+    animation: fadeInScale 0.3s ease forwards;
+    font-family: 'Syne', sans-serif;
+}
+
+#twoFAModal h2 {
+    color: #0A6D03;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+#twoFAModal p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#twoFACodeInput {
+    letter-spacing: 0.3rem;
+    font-size: 1.5rem;
+    padding: 12px 15px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #0A6D03;
+    background: #f0fff3;
+    transition: all 0.3s;
+}
+
+#twoFACodeInput:focus {
+    border-color: #0E7B04;
+    background: #ffffff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(10, 109, 3, 0.2);
+}
+
+#verify2FABtn, #cancel2FABtn {
+    width: 45%;
+    padding: 12px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#verify2FABtn {
+    background-color: #0A6D03;
+    color: #fff;
+    border: none;
+}
+
+#verify2FABtn:hover {
+    background-color: #0E7B04;
+    transform: scale(1.02);
+}
+
+#cancel2FABtn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+}
+
+#cancel2FABtn:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.02);
+}
+
+/* 2FA Error message */
+#twoFAError {
+    color: #E74C3C;
+    margin-top: 8px;
+    font-size: 0.95rem;
+}
+
+/* 2FA Timer display */
+#twoFATimer {
+    margin-top: 10px;
+    font-weight: 700;
+    color: #0A6D03;
+    font-size: 1rem;
+}
+
+/* Add a subtle shadow to modal */
+#twoFAModal .modal-content {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}

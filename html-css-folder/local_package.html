@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Packages - Admin Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="local_package.css">
+  <link rel="stylesheet" href="navigation.css">
+  <link rel="stylesheet" href="modal.css">
+
+  <!-- Icons & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="titlebar">
+    <div class="title">Doctor Travel & Tours Reservation System</div>
+    <div class="window-buttons">
+      <button onclick="api.minimize()">🗕</button>
+      <button onclick="api.maximize()">🗖</button>
+      <button onclick="api.close()">✖</button>
+    </div>
+  </div>
+
+  <div class="scrollable-content">
+    <div class="top-bar">
+      <h1>Doctor Travel & Tours Reservation System</h1>
+    </div>
+
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="aside">
+        <div class="top">
+          <div class="logo"><h2>Menu</h2></div>
+        </div>
+        <div class="sidebar">
+          <a href="dashboard.html"><span class="material-symbols-sharp">grid_view</span><h3>Dashboard</h3></a>
+          <a href="package.html"><span class="material-symbols-sharp">luggage</span><h3>International Packages</h3></a>
+          <a href="local_package.html" class="active"><span class="material-symbols-sharp">luggage</span><h3>Local Packages</h3></a>
+          <a href="schedule.html"><span class="material-symbols-sharp">calendar_month</span><h3>Schedule</h3></a>
+          <a href="bookings.html"><span class="material-symbols-sharp">receipt_long</span><h3>Bookings</h3></a>
+          <a href="feedback.html"><span class="material-symbols-sharp">comment</span><h3>Feedback</h3></a>
+          <a href="blogs.html"><span class="material-symbols-sharp">article</span><h3>Blogs</h3></a>
+          <a href="#" onclick="logout()"><span class="material-symbols-sharp">logout</span><h3>Logout</h3></a>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main>
+        <h1>Manage Local Travel Packages</h1>
+
+        <!-- Controls -->
+        <div class="controls">
+          <input type="text" id="loc-searchBox" placeholder="Search packages...">
+          <button id="loc-addPackageBtn"><i class="fa fa-plus"></i> Add Package</button>
+        </div>
+
+        <!-- Package grid -->
+        <div class="package-grid" id="loc-packageGrid"></div>
+
+        <!-- Package Details Modal -->
+        <div id="loc-packageDetailsModal" class="modal">
+          <div class="modal-content" id="loc-packageDetailsContent">
+            <span class="modal-close" id="loc-closeDetailsModal">&times;</span>
+            <div id="loc-detailsPhotoContainer"></div>
+            <div id="loc-detailsInfoContainer"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Logout Modal -->
+  <div id="logoutModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <h2>Confirm Logout</h2>
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-buttons">
+        <button id="confirmBtn">Yes</button>
+        <button id="cancelBtn">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Package Modal -->
+  <div id="loc-addPackageModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" id="loc-closeAddModal">&times;</span>
+      <h2>Add New Local Package</h2>
+      <form id="loc-addPackageForm">
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-pkgName">Package Name</label>
+            <input type="text" id="loc-pkgName" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgPrice">Price</label>
+            <input type="number" id="loc-pkgPrice" placeholder="₱20,000" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgMainPhoto">Main Photo</label>
+            <input type="file" id="loc-pkgMainPhoto" accept="image/*" required>
+            <div id="loc-mainPreviewContainer"></div>
+          </div>
+        </div>
+
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-pkgPhoto">Additional Photos</label>
+            <input type="file" id="loc-pkgPhoto" accept="image/*" multiple>
+            <div id="loc-previewContainer"></div>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgDestination">Destination</label>
+            <input type="text" id="loc-pkgDestination" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgAvailable">Available</label>
+            <input type="number" id="loc-pkgAvailable" value="0" required>
+          </div>
+        </div>
+
+        <div class="form-row row-2">
+          <div class="form-group full-width">
+            <label for="loc-pkgDescription">Description</label>
+            <textarea id="loc-pkgDescription"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row row-1">
+          <div class="form-group">
+            <label>Itinerary</label>
+            <div id="loc-itineraryBuilder" class="itinerary-builder"></div>
+            <button type="button" id="loc-addDayBtn" class="itinerary-btn add">+ Add Day</button>
+            <input type="hidden" id="loc-pkgItinerary">
+          </div>
+        </div>
+
+
+        <div class="form-row row-2">
+          <div class="form-group">
+            <label for="loc-pkgInclusions">Inclusions</label>
+            <textarea id="loc-pkgInclusions"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgExclusions">Exclusions</label>
+            <textarea id="loc-pkgExclusions"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row row-1">
+          <button type="submit" class="btn-submit">Save Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Package Modal -->
+  <div id="loc-editPackageModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>Edit Local Package</h2>
+      <form id="loc-editPackageForm">
+        <input type="hidden" id="loc-editPkgId">
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-editPkgName">Package Name</label>
+            <input type="text" id="loc-editPkgName" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgPrice">Price</label>
+            <input type="number" id="loc-editPkgPrice" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgMainPhoto">Main Photo</label>
+            <input type="file" id="loc-editPkgMainPhoto" accept="image/*">
+            <div id="loc-editMainPreviewContainer"></div>
+          </div>
+        </div>
+
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-editPkgPhoto">Additional Photos</label>
+            <input type="file" id="loc-editPkgPhoto" multiple accept="image/*">
+            <div id="loc-editPreviewContainer"></div>
+            <div id="loc-editExistingPhotos"></div>
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgDestination">Destination</label>
+            <input type="text" id="loc-editPkgDestination">
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgAvailable">Available</label>
+            <input type="number" id="loc-editPkgAvailable" min="0">
+          </div>
+        </div>
+
+        <div class="form-row row-1">
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea id="loc-editPkgDescription"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row row-2">
+          <div class="form-group">
+            <label>Itinerary</label>
+            <div id="loc-editItineraryBuilder" class="itinerary-builder"></div>
+            <button type="button" id="loc-editAddDayBtn" class="itinerary-btn add">+ Add Day</button>
+            <input type="hidden" id="loc-editPkgItinerary">
+          </div>
+        </div>
+
+        <div class="form-row row-2">
+          <div class="form-group">
+            <label>Inclusions</label>
+            <textarea id="loc-editPkgInclusions"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Exclusions</label>
+            <textarea id="loc-editPkgExclusions"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Update Package</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Photo Viewer Modal -->
+  <div id="loc-photoViewerModal" class="modal">
+    <span id="loc-closePhotoViewer">&times;</span>
+    <button id="loc-prevPhoto" class="photo-nav">&lt;</button>
+    <div class="photo-viewer-container">
+      <img id="loc-photoViewerImg" src="" alt="Photo Viewer">
+    </div>
+    <button id="loc-nextPhoto" class="photo-nav">&gt;</button>
+  </div>
+
+  <!-- JS -->
+  <script src="local_package.js"></script>
+  <script src="modal.js"></script>
+</body>
+</html>

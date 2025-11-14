@@ -1,0 +1,289 @@
+
+/* Booking Section Header */
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.booking-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.booking-header input[type="date"] {
+  padding: 8px 12px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--clr-primary);
+}
+
+
+.card.booking-table-card {
+  background: var(--clr-white);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  max-height: 400px; 
+  overflow-y: auto; 
+  overflow-x: auto; 
+  padding: 0; 
+  will-change: scroll-position;
+}
+
+
+.booking-table th {
+  position: sticky;
+  top: 0;  
+  background-color: var(--clr-white); 
+  z-index: 2;
+  border-bottom: 1px solid #eee;
+  padding: 12px; 
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.booking-table th {
+  position: sticky;
+  top: 0;
+  background-color: var(--clr-bg);
+  font-weight: 600;
+  z-index: 2;
+}
+
+.payment-btn {
+  padding: 6px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.payment-btn.full {
+  background-color: var(--clr-success);
+  color: white;
+}
+
+.payment-btn.half {
+  background-color: #f1c40f;
+  color: black;
+}
+
+.payment-btn.cancelled {
+  background-color: var(--clr-danger);
+  color: white;
+}
+
+.payment-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+.payment-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border: none;
+  background-color: var(--clr-primary);
+  color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.pagination button:hover:not(:disabled) {
+  background-color: var(--clr-primary-dark);
+  transform: scale(1.05);
+}
+
+
+.pagination span {
+  font-size: 0.95rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .sidebar a {
+    flex-direction: column;
+    font-size: 0.8rem;
+  }
+
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .booking-table {
+    min-width: 600px;
+  }
+}
+
+.titlebar {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 40px;
+   background-color: #228B73;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0 10px;
+   -webkit-app-region: drag; 
+   z-index: 1000;
+   color: white;
+}
+
+.titlebar .window-buttons {
+   display: flex;
+   gap: 8px;
+}
+
+.titlebar button {
+   -webkit-app-region: no-drag; 
+   background: transparent;
+   border: none;
+   color: white;
+   font-size: 16px;
+   cursor: pointer;
+   width: 36px;
+   height: 28px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.titlebar button:hover {
+   background: rgba(255,255,255,0.2);
+   border-radius: 4px;
+}
+.scrollable-content {
+   margin-top: 40px;
+   height: calc(100vh - 40px);
+   overflow-y: auto;
+}
+
+/* Schedule Modal */
+/* Schedule Modal Overlay */
+#scheduleModal {
+  display: none; /* hidden by default */
+  position: fixed;
+  inset: 0; /* top/right/bottom/left = 0 */
+  background: rgba(0,0,0,0.3); /* semi-transparent overlay */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Show modal */
+#scheduleModal.show {
+  display: flex;
+  pointer-events: auto; /* ensure clicks work */
+}
+
+/* Modal content */
+#scheduleModal .modal-content {
+  background: var(--clr-white);
+  border-radius: 1rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  position: relative;
+  padding: 20px;
+  width: 350px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: auto; /* ensure clicks inside work */
+}
+
+/* Close button (X) */
+#scheduleModal .modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1010;
+}
+
+/* Cancel / Confirm buttons */
+#scheduleModal .modal-buttons button {
+  cursor: pointer;
+}
+
+
+#scheduleModal h2 {
+  margin: 0;
+  text-align: center;
+  color: var(--clr-primary);
+  font-size: 1.2rem;
+}
+
+#scheduleModal input[type="date"],
+#scheduleModal input[type="time"] {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--clr-primary);
+}
+
+#scheduleModal .modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.datetime-group input {
+  flex: 1;
+  min-width: 0;
+}
+.datetime-group {
+  display: flex;
+  gap: 10px;
+}
+
+.datetime-group > div {
+  flex: 1;
+}
+
+tr.fullypaid {
+  background-color: #e9f9ee;
+}
+
+tr.cancelled {
+  background-color: #f8d7da;
+  color: #555;
+}
+
+

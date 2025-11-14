@@ -1,0 +1,263 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packages - Admin Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="package.css">
+    <link rel="stylesheet" href="modal.css">
+    <link rel="stylesheet" href="navigation.css">
+
+    <!-- Icons & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="titlebar">
+      <div class="title">Dr. Travel & Tours Reservation System</div>
+      <div class="window-buttons">
+        <button onclick="api.minimize()">🗕</button>
+        <button onclick="api.maximize()">🗖</button>
+        <button onclick="api.close()">✖</button>
+      </div>
+    </div>
+
+    <div class="scrollable-content">
+      <div class="top-bar">
+        <h1>Doctor Travel & Tours Reservation System</h1>
+      </div>
+
+      <div class="container">
+        <!-- Sidebar -->
+        <aside class="aside">
+          <div class="top">
+            <div class="logo"><h2>Menu</h2></div>
+          </div>
+          <div class="sidebar">
+            <a href="dashboard.html"><span class="material-symbols-sharp">grid_view</span><h3>Dashboard</h3></a>
+            <a href="package.html" class="active"><span class="material-symbols-sharp">luggage</span><h3>International Packages</h3></a>
+            <a href="local_package.html"><span class="material-symbols-sharp">luggage</span><h3>Local Packages</h3></a>
+            <a href="schedule.html"><span class="material-symbols-sharp">calendar_month</span><h3>Schedule</h3></a>
+            <a href="bookings.html"><span class="material-symbols-sharp">receipt_long</span><h3>Bookings</h3></a>
+            <a href="feedback.html"><span class="material-symbols-sharp">comment</span><h3>Feedback</h3></a>
+            <a href="blogs.html"><span class="material-symbols-sharp">article</span><h3>Blogs</h3></a>
+            <a href="#" onclick="logout()"><span class="material-symbols-sharp">logout</span><h3>Logout</h3></a>
+            
+          </div>
+        </aside>
+
+        <!-- Main content -->
+        <main>
+          <h1>Manage Travel Packages</h1>
+
+          <!-- Controls -->
+          <div class="controls">
+            <input type="text" id="searchBox" placeholder="Search packages...">
+            <button id="addPackageBtn"><i class="fa fa-plus"></i> Add Package</button>
+          </div>
+
+          <!-- Package grid -->
+          <div class="package-grid" id="packageGrid">
+            <!-- JS will render package cards here -->
+          </div>
+          
+          <!-- Package Details Modal -->
+          <div id="packageDetailsModal" class="modal">
+            <div class="modal-content" id="packageDetailsContent">
+              <span class="modal-close" id="closeDetailsModal">&times;</span>
+              <div id="detailsPhotoContainer"></div>
+              <div id="detailsInfoContainer"></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <span class="modal-close" id="closeModal">&times;</span>
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons">
+          <button id="confirmBtn">Yes</button>
+          <button id="cancelBtn">No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Package Modal -->
+    <div id="addPackageModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" id="closeAddModal">&times;</span>
+        <h2>Add New Package</h2>
+        <form id="addPackageForm">
+          <!-- Row 1: Package Name | Price | Main Photo -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="pkgName">Package Name</label>
+              <input type="text" id="pkgName" required>
+            </div>
+            <div class="form-group">
+              <label for="pkgPrice">Price</label>
+              <input type="number" id="pkgPrice" placeholder="₱20,000" required>
+            </div>
+            <div class="form-group">
+              <label for="pkgMainPhoto">Main Photo</label>
+              <input type="file" id="pkgMainPhoto" accept="image/*" required>
+              <div id="mainPreviewContainer"></div>
+            </div>
+          </div>
+
+          <!-- Row 2: Additional Photos | Destination | Available -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="pkgPhoto">Additional Photos</label>
+              <input type="file" id="pkgPhoto" accept="image/*" multiple>
+              <div id="previewContainer"></div>
+            </div>
+            <div class="form-group">
+              <label for="pkgDestination">Destination</label>
+              <input type="text" id="pkgDestination" required>
+            </div>
+            <div class="form-group">
+              <label for="pkgAvailable">Available</label>
+              <input type="number" id="pkgAvailable" value="0" required>
+            </div>
+          </div>
+
+          <!-- Row 3: Description -->
+          <div class="form-row row-2">
+            <div class="form-group full-width">
+              <label for="pkgDescription">Description</label>
+              <textarea id="pkgDescription"></textarea>
+            </div>
+          </div>
+
+          <!-- Row 4: Itinerary -->
+          <div class="form-row row-1">
+            <div class="form-group">
+              <label>Itinerary</label>
+              <div id="itineraryBuilder" class="itinerary-builder"></div>
+              <button type="button" id="addDayBtn" class="itinerary-btn add">+ Add Day</button>
+              <input type="hidden" id="pkgItinerary">
+            </div>
+          </div>
+
+          <!-- Row 5: Inclusions | Exclusions -->
+          <div class="form-row row-2">
+            <div class="form-group">
+              <label for="pkgInclusions">Inclusions</label>
+              <textarea id="pkgInclusions"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="pkgExclusions">Exclusions</label>
+              <textarea id="pkgExclusions"></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-row row-1">
+            <button type="submit" class="btn-submit">Save Package</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Package Modal -->
+    <div id="editPackageModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Edit Package</h2>
+        <form id="editPackageForm">
+          <input type="hidden" id="editPkgId">
+
+          <!-- Row 1: Package Name | Price | Main Photo -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="editPkgName">Package Name</label>
+              <input type="text" id="editPkgName" required>
+            </div>
+            <div class="form-group">
+              <label for="editPkgPrice">Price</label>
+              <input type="number" id="editPkgPrice" required>
+            </div>
+            <div class="form-group">
+              <label for="editPkgMainPhoto">Main Photo</label>
+              <input type="file" id="editPkgMainPhoto" accept="image/*">
+              <div id="editMainPreviewContainer"></div>
+            </div>
+          </div>
+
+          <!-- Row 2: Additional Photos | Destination | Available -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="editPkgPhoto">Additional Photos</label>
+              <input type="file" id="editPkgPhoto" multiple accept="image/*">
+              <div id="editPreviewContainer"></div>
+              <div id="editExistingPhotos"></div>
+            </div>
+            <div class="form-group">
+              <label for="editPkgDestination">Destination</label>
+              <input type="text" id="editPkgDestination">
+            </div>
+            <div class="form-group">
+              <label for="editPkgAvailable">Available</label>
+              <input type="number" id="editPkgAvailable" min="0">
+            </div>
+          </div>
+
+          <!-- Row 3: Description -->
+          <div class="form-row row-1">
+            <div class="form-group full-width">
+              <label>Description</label>
+              <textarea id="editPkgDescription"></textarea>
+            </div>
+          </div>
+
+          <!-- Row 4: Itinerary -->
+          <div class="form-row row-2">
+            <div class="form-group">
+              <label>Itinerary</label>
+              <div id="editItineraryBuilder" class="itinerary-builder"></div>
+              <button type="button" id="editAddDayBtn" class="itinerary-btn add">+ Add Day</button>
+              <input type="hidden" id="editPkgItinerary">
+            </div>
+          </div>
+
+          <!-- Row 5: Inclusions | Exclusions -->
+          <div class="form-row row-2">
+            <div class="form-group">
+              <label>Inclusions</label>
+              <textarea id="editPkgInclusions"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Exclusions</label>
+              <textarea id="editPkgExclusions"></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit">Update Package</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Photo Viewer Modal -->
+    <div id="photoViewerModal" class="modal">
+      <span id="closePhotoViewer">&times;</span>
+      <button id="prevPhoto" class="photo-nav">&lt;</button>
+      <div class="photo-viewer-container">
+        <img id="photoViewerImg" src="" alt="Photo Viewer">
+      </div>
+      <button id="nextPhoto" class="photo-nav">&gt;</button>
+    </div>
+
+    <!-- JS -->
+    <script src="package.js"></script>
+    <script src="modal.js"></script>
+  </body>
+  </html>

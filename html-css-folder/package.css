@@ -1,0 +1,613 @@
+  main h1 {
+    margin-bottom: 1rem;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .controls input {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    width: 60%;
+  }
+
+  .controls button {
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--clr-primary);
+    color: var(--clr-white);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .controls button:hover {
+    opacity: 0.9;
+  }
+
+  /* ============================== Package Grid ============================== */
+  .package-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 15px;
+    justify-content: start;
+  }
+
+  /* ============================== Package Card ============================== */
+  .package-card {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--clr-white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    overflow: hidden;
+    transition: transform 0.3s;
+    min-height: auto;
+    padding: 10px 15px;
+    align-items: center;
+  }
+
+  .package-card:hover {
+    transform: translateY(-3px);
+  }
+
+  /* ============================== Left: main + additional photos ============================== */
+  .package-card .package-photos {
+    flex-shrink: 0;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .package-photos img.main-photo {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .package-photos .additional-photos {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .package-photos .additional-photos img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .package-photos .additional-photos img:hover {
+    transform: scale(1.05);
+  }
+
+  /* ============================== Right: package info ============================== */
+  .package-card .package-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 15px;
+  }
+
+  .package-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: var(--clr-dark);
+  }
+
+  .package-info p {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    color: #555;
+    line-height: 1.4;
+  }
+
+  /* ============================== Action buttons ============================== */
+  .actions {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 8px;
+  }
+
+  .actions button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .actions .edit { background: var(--clr-success); color: white; }
+  .actions .delete { background: var(--clr-danger); color: white; }
+
+  .actions .edit:hover,
+  .actions .delete:hover {
+    opacity: 0.85;
+  }
+
+  /* ============================== Responsive ============================== */
+  @media (max-width: 768px) {
+    .package-card {
+      flex-direction: column;
+      min-height: auto;
+    }
+
+    .package-photos {
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .package-photos img.main-photo {
+      height: 180px;
+      border-radius: 8px;
+    }
+  }
+
+  /* ============================== Modals ============================== */
+  .modal {
+    display: none;
+    position: fixed;
+    top:0; left:0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal.show { display: flex; }
+
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-height: 85vh;          
+    overflow: hidden;          
+  }
+
+  .modal-content form {
+    overflow-y: auto;
+    padding-right: 5px;
+    flex: 1;                 
+  }
+
+  #addPackageModal .modal-content,
+  #editPackageModal .modal-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 550px;             
+    max-width: 90vw;          
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    background: var(--clr-white);
+  }
+
+  #addPackageForm,
+  #editPackageForm {
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 8px;
+    display: grid;
+    gap: 1rem 1.5rem;
+  }
+
+  #addPackageModal .modal-close,
+  #editPackageModal .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+  }
+
+
+  .modal-content h2,
+  .modal-close {
+    position: sticky;
+    top: 0;
+    background: var(--clr-white);
+    z-index: 10;
+    padding-top: 0.5rem;
+  }
+
+
+  #addPackageForm,
+  #editPackageForm { display: grid; gap: 1rem 1.5rem; }
+
+  .form-row { display: grid; gap: 1rem; }
+
+  .row-3 { grid-template-columns: repeat(3, 1fr); }
+  .row-2 { grid-template-columns: repeat(2, 1fr); }
+  .row-1 { grid-template-columns: 1fr; }
+  .full-width { grid-column: 1 / -1; }
+
+  .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--clr-dark-variant);
+  }
+
+  .modal-close:hover { color: var(--clr-primary); }
+
+  #previewContainer,
+  #editPreviewContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    grid-column: 1 / -1;
+    margin-top: 5px;
+  }
+
+  /* ============================== Form ============================== */
+  .form-group { margin-bottom: 1rem; }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+  }
+
+  .btn-submit {
+    grid-column: 1 / -1;
+    padding: 0.8rem;
+    background: var(--clr-primary);
+    color: var(--clr-white);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+  }
+
+  .btn-submit:hover { opacity: 0.9; }
+
+  /* ============================== Photo Viewer ============================== */
+  #photoViewerModal {
+    display: none;
+    position: fixed;
+    top:0; left:0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #photoViewerModal.show { display: flex; }
+
+  #photoViewerImg {
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 10px;
+  }
+
+  .photo-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 3100;
+  }
+
+  #prevPhoto { left: 30px; }
+  #nextPhoto { right: 30px; }
+
+  #closePhotoViewer {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    z-index: 3100;
+    transition: color 0.2s ease;
+  }
+
+  #closePhotoViewer:hover { color: var(--clr-primary); }
+
+  /* ============================== Electron Titlebar ============================== */
+  .titlebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: var(--clr-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    -webkit-app-region: drag;
+    z-index: 1000;
+    color: white;
+  }
+
+  .titlebar .window-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .titlebar button {
+    -webkit-app-region: no-drag;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    width: 36px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .titlebar button:hover {
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+  }
+
+  .scrollable-content {
+    margin-top: 40px;
+    height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
+
+  /* ============================== Itinerary Builder ============================== */
+  .itinerary-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .day-block {
+    background: var(--clr-bg);
+    border: 1px solid #ddd;
+    border-radius: var(--card-radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+  }
+
+  .day-block h4 {
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--clr-primary);
+  }
+
+  .activities {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .activity-input {
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .itinerary-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .itinerary-btn.add {
+    background: var(--clr-primary);
+    color: var(--clr-white);
+  }
+
+  .itinerary-btn.remove {
+    background: var(--clr-danger);
+    color: var(--clr-white);
+  }
+
+  .itinerary-btn:hover {
+    opacity: 0.85;
+  }
+
+  .addon-block {
+    background: var(--clr-bg);
+    border: 1px solid #ddd;
+    border-radius: var(--card-radius);
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .addon-block input.addon-input {
+    flex: 1;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .addon-block button {
+    background: var(--clr-danger);
+    color: var(--clr-white);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: 0.3s;
+  }
+
+  .addon-block button:hover {
+    opacity: 0.85;
+  }
+
+  #addAddonBtn,
+  #editAddAddonBtn {
+    background: var(--clr-primary);
+    color: var(--clr-white);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  #addAddonBtn:hover,
+  #editAddAddonBtn:hover {
+    opacity: 0.85;
+  }
+    
+
+
+  /* ============================== Package Details Modal ============================== */
+#packageDetailsModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 40px 10px;
+}
+
+#packageDetailsModal .modal-content {
+  display: flex;
+  flex-direction: row;  
+  border-radius: 8px;
+  max-width: 1100px;
+  width: 90%;
+  padding: 30px;
+  gap: 30px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+#detailsPhotoContainer {
+  flex: 1;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 600px;
+  padding-right: 5px;
+  scrollbar-width: thin;
+}
+
+#detailsPhotoContainer img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+
+#detailsInfoContainer {
+  flex: 2;
+  text-align: left;
+  line-height: 1.5;
+  font-size: 14px;
+  color: #333;
+  overflow-y: auto;
+  max-height: 600px;  
+}
+
+#detailsInfoContainer h2 {
+  text-align: center;
+  color: #00695c;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+#detailsInfoContainer h3 {
+  color: #00796b;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+
+#detailsInfoContainer p,
+#detailsInfoContainer ul {
+  margin: 0;
+}
+
+
+#packageDetailsModal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#packageDetailsModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  #packageDetailsModal .modal-content {
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+  }
+
+  #detailsPhotoContainer {
+    flex-direction: row;
+    overflow-x: auto;
+    max-height: 200px;
+    max-width: 100%;
+  }
+
+  #detailsInfoContainer {
+    max-height: none;
+  }
+}

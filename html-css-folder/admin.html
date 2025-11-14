@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Doctor Travel and Tours Admin</title>
+   <link rel="stylesheet" href="admin.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+   <link rel="icon" type="image/png" href="./img/logoo.png">
+</head>
+<body>
+    <div class="drag-bar">
+        <div class="card-header">
+            <button id="min-btn"><i class="fa-solid fa-window-minimize"></i></button>
+            <button id="max-btn"><i class="fa-regular fa-square"></i></button>
+            <button id="close-btn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sign In Form -->
+        <div class="form-container sign-in-container">
+            <form id="signInForm">  
+                <div class="form-header">
+                    <img src="./img/logoo.png" alt="Logo" class="logo">
+                    <h2>Doctor Travel and Tours ADMIN</h2>
+                </div>
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <div style="position: relative; width: 100%;">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <span id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #0A6D03;">👁️</span>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <div class="error-message" id="error-message"></div>
+            </form>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-right">
+                    <h3>Your RX <b>for Adventure.</b></h3>
+                    <img src="./img/pic.png" alt="Campus" class="pic">
+                    <div class="third-circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Registration Modal -->
+    <div id="adminRegisterModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="modal-close" id="closeAdminModal">&times;</span>
+            <h2>Admin Registration</h2>
+            <input type="email" id="newAdminEmail" placeholder="Email" />
+            <input type="text" id="newAdminUsername" placeholder="Username" />
+            <input type="password" id="newAdminPassword" placeholder="Password" />
+            <button id="registerAdminBtn">Register</button>
+        </div>
+    </div>
+
+    <!-- 2FA Verification Modal -->
+    <div id="twoFAModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Enter 2FA Code</h2>
+            <p>A 6-digit code was sent to your email. Please enter it below:</p>
+            <input type="text" id="twoFACodeInput" placeholder="Enter 2FA code" maxlength="6" />
+            <div style="margin-top:5px;">
+                <button id="verify2FABtn">Verify</button>
+                <button id="cancel2FABtn" style="margin-left:10px;">Cancel</button>
+            </div>
+            <div id="twoFAError" style="color:red; margin-top:5px;"></div>
+            <p id="twoFATimer" style="margin-top:5px; font-weight:bold; color:#0A6D03;"></p>
+        </div>
+    </div>
+
+   <!-- External JavaScript -->
+   <script src="./admin.js"></script>
+</body>
+</html>
