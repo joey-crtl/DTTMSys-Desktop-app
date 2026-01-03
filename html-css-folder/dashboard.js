@@ -23,20 +23,31 @@ async function loadDashboard() {
     const topContainer = document.getElementById("topPackages");
     topContainer.innerHTML = "";
 
-    stats.mostBookedPackages.forEach(pkg => {
-      const div = document.createElement("div");
-      div.classList.add("product");
-      div.innerHTML = `
-        <img src="${pkg.main_photo || pkg.add_photo?.[0] || 'placeholder.jpg'}" alt="${pkg.name}">
-        <div class="product-info">
-          <h3>${pkg.name}</h3>
-          <div class="stars">${getStars(pkg.rating || 0)}</div>
-          <p class="price">₱${pkg.price?.toLocaleString() || '0'}</p>
-          <p class="bookings">Bookings: ${pkg.bookings || 0}</p>
-        </div>
-      `;
-      topContainer.appendChild(div);
-    });
+stats.mostBookedPackages.forEach(pkg => {
+  const div = document.createElement("div");
+  div.classList.add("product");
+
+  const imgSrc = pkg.main_photo || (pkg.add_photo && pkg.add_photo[0]) || "placeholder.jpg";
+
+  div.innerHTML = `
+    <img src="${imgSrc}" alt="${pkg.name}">
+
+    <div class="product-info">
+      <h3>${pkg.name}</h3>
+
+      <div class="product-location">
+        <i class="fa-solid fa-location-dot"></i>
+        ${pkg.destination || "Unknown"}
+      </div>
+
+      <div class="stars">${getStars(pkg.rating || 0)}</div>
+
+      <div class="price">₱${pkg.price?.toLocaleString() || "0"}</div>
+    </div>
+  `;
+
+  topContainer.appendChild(div);
+});
 
   } catch (err) {
     console.error("Error loading dashboard:", err);

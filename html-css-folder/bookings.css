@@ -1,3 +1,17 @@
+:root {
+  --clr-primary: #228B73;
+  --clr-primary-dark: #1b6e5a;
+
+  --clr-success: #2ecc71;
+  --clr-danger: #e74c3c;
+
+  --clr-white: #ffffff;
+  --clr-bg: #f5f6fa;
+
+  --card-radius: 1rem;
+  --shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
 
 /* Booking Section Header */
 .booking-header {
@@ -55,13 +69,18 @@
 }
 
 .payment-btn {
-  padding: 6px 10px;
-  margin: 2px;
+  padding: 6px 12px;        /* Slightly wider for better text fit */
+  margin: 0 2px;            /* uniform horizontal spacing */
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 13px;
-  transition: 0.3s;
+  font-size: 14px;          /* slightly larger for readability */
+  font-weight: 600;         /* bold to make text more visible */
+  line-height: 1.2;         /* consistent height */
+  text-align: center;       /* center text */
+  min-width: 80px;          /* ensure all buttons same min width */
+  transition: transform 0.2s, opacity 0.2s;
+  
 }
 
 .payment-btn.full {
@@ -71,7 +90,7 @@
 
 .payment-btn.half {
   background-color: #f1c40f;
-  color: black;
+  color: #111;               /* darker text for contrast */
 }
 
 .payment-btn.cancelled {
@@ -81,10 +100,11 @@
 
 .payment-btn:hover:not(:disabled) {
   transform: scale(1.05);
-  opacity: 0.9;
+  opacity: 0.95;            /* slightly higher for hover visibility */
 }
+
 .payment-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.85;             /* slightly higher so text is readable */
   cursor: not-allowed;
 }
 

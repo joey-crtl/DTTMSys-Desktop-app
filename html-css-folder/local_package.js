@@ -156,13 +156,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       const card = document.createElement("div");
       card.classList.add("package-card");
       card.innerHTML = `
-        <div class="package-info">
+        <div class="card-image">
+          <img src="${pkg.main_photo}" alt="${pkg.name}">
+        </div>
+
+        <div class="card-body">
           <h3>${pkg.name}</h3>
-          <div class="actions">
-            <button class="viewDetails">View Details</button>
-            <button class="edit">Edit</button>
-            <button class="delete">Delete</button>
-          </div>
+
+          <button class="btn viewDetails">View Details</button>
+          <button class="btn edit">Edit</button>
+          <button class="btn delete">Delete</button>
         </div>
       `;
       packageGrid.appendChild(card);

@@ -127,3 +127,104 @@
    height: calc(100vh - 40px);
    overflow-y: auto;
 }
+
+:root {
+    --teal-dark: #228B73;
+    --teal-light: #e0f2f1;
+    --text-main: #333;
+    --text-muted: #666;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.main-header {
+    margin-bottom: 2rem;
+}
+
+.main-header h1 {
+    font-size: 1.8rem;
+    color: var(--teal-dark);
+    margin-bottom: 0.2rem;
+}
+
+.main-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.feedback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+/* Individual Feedback Card */
+.feedback-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #eee;
+    transition: transform 0.2s, border-color 0.2s;
+    border-left: 5px solid var(--teal-dark); /* Side accent */
+}
+
+.feedback-card:hover {
+    transform: translateX(5px);
+    border-color: var(--teal-dark);
+}
+
+/* Left Section: User Initials & Meta */
+.fb-user-icon {
+    min-width: 50px;
+    height: 50px;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+/* Middle Section: The Content */
+.fb-details {
+    flex: 1;
+}
+
+.fb-details h3 {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fb-email {
+    font-size: 0.8rem;
+    color: var(--teal-dark);
+    font-weight: 400;
+    background: var(--teal-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.fb-message {
+    color: #555;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* Right Section: Date */
+.fb-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}

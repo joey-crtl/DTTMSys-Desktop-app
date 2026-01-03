@@ -10,8 +10,7 @@ const { createClient } = require("@supabase/supabase-js");
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const BLOGS_BUCKET = "blogs";
-
-const PHILSMS_API_TOKEN = process.env.PHILSMS_API_TOKEN || "YOUR_PHILSMS_KEY"; 
+const PHILSMS_API_TOKEN = process.env.PHILSMS_API_KEY || "YOUR_PHILSMS_KEY"; 
 
 const sendSMS = async (recipient, message) => {
   const axios = require("axios");
@@ -20,7 +19,7 @@ const sendSMS = async (recipient, message) => {
       "https://app.philsms.com/api/v3/sms/send",
       {
         recipient,
-        sender_id: "YourBrand", // max 11 chars
+        sender_id: "DrTravelPH", // max 11 chars
         type: "plain",
         message,
       },
@@ -78,6 +77,34 @@ async function sendEmail2FACode(email, code) {
   };
   return transporter.sendMail(mailOptions);
 }
+
+async function sendHalfPaidEmail(booking) {
+  const mailOptions = {
+    from: process.env.EMAIL_FROM || '"Doctor Travel & Tours" <no-reply@drtravelandtoursph.com>',
+    to: booking.email,
+    subject: "Partial Payment Received – Doctor Travel & Tours",
+    html: `
+      <p>Hello <strong>${booking.full_name}</strong>,</p>
+
+      <p>We have received your <strong>partial payment</strong> for the following booking:</p>
+
+      <p>
+        <strong>Destination:</strong> ${booking.destination || "Unknown"}<br>
+        <strong>Status:</strong> HALF PAID<br>
+        <strong>Passengers:</strong> ${booking.passengers}<br>
+        <strong>Reference ID:</strong> ${booking.reference_id || "N/A"}
+      </p>
+
+      <p>Please complete the remaining balance before the travel date.</p>
+
+      <p>Thank you,<br>
+      <strong>Doctor Travel & Tours</strong></p>
+    `
+  };
+
+  return transporter.sendMail(mailOptions);
+}
+
 
 // -------------------- Create Window --------------------
 function createWindow() {
@@ -600,47 +627,63 @@ ipcMain.handle("createSchedule", async (event, { booking_id, reference_id = null
 
 ipcMain.handle("getSchedules", async () => {
   try {
-    // 1️⃣ Get schedules along with booking info
     const { data: schedules, error: scheduleErr } = await supabase
       .from("schedule_info")
       .select(`
         *,
         booking_info (
           full_name,
+          passengers,
           package_id,
           local_package_id
         )
       `);
+
     if (scheduleErr) throw scheduleErr;
 
-    // 2️⃣ Fetch all packages
-    const { data: intlPackages } = await supabase.from("package_info").select("id, name");
-    const { data: localPackages } = await supabase.from("local_package_info").select("id, name");
+    const { data: intlPackages } = await supabase
+      .from("package_info")
+      .select("id, name, destination");
 
-    // 3️⃣ Create lookup maps
+    const { data: localPackages } = await supabase
+      .from("local_package_info")
+      .select("id, name, destination");
+
+    // Store FULL objects
     const intlMap = {};
-    intlPackages.forEach(p => { intlMap[p.id] = p.name; });
-    const localMap = {};
-    localPackages.forEach(p => { localMap[p.id] = p.name; });
+    intlPackages.forEach(p => { intlMap[p.id] = p; });
 
-    // 4️⃣ Map schedules to include actual package name
+    const localMap = {};
+    localPackages.forEach(p => { localMap[p.id] = p; });
+
     return schedules.map(s => {
       const booking = s.booking_info;
+
       let packageName = "Unknown";
+      let destination = "—";
 
       if (booking) {
-        if (booking.package_id) packageName = intlMap[booking.package_id] || "Unknown International Package";
-        else if (booking.local_package_id) packageName = localMap[booking.local_package_id] || "Unknown Local Package";
+        if (booking.package_id) {
+          const pkg = intlMap[booking.package_id];
+          packageName = pkg?.name || "Unknown International Package";
+          destination = pkg?.destination || "—";
+        } else if (booking.local_package_id) {
+          const pkg = localMap[booking.local_package_id];
+          packageName = pkg?.name || "Unknown Local Package";
+          destination = pkg?.destination || "—";
+        }
       }
 
       return {
         id: s.id,
         passenger_name: booking?.full_name || "Unknown",
+        passenger_count: booking?.passengers || 0,
+        destination,
         package_name: packageName,
-        reference_id: s.reference_id || s.local_reference_id,
         travel_date: s.travel_date
       };
     });
+
   } catch (err) {
     console.error("getSchedules error:", err);
     return [];
@@ -678,6 +721,17 @@ ipcMain.handle("sendSMS", async (event, { recipient, message }) => {
   if (!recipient || !message) return { success: false, error: "Recipient and message required" };
   return await sendSMS(recipient, message);
 });
+
+ipcMain.handle("send-halfpaid-email", async (event, booking) => {
+  try {
+    await sendHalfPaidEmail(booking);
+    return { success: true };
+  } catch (err) {
+    console.error("HalfPaid email error:", err);
+    return { success: false, message: "Failed to send HalfPaid email" };
+  }
+});
+
 
 // -------------------- App Lifecycle --------------------
 app.whenReady().then(createWindow);

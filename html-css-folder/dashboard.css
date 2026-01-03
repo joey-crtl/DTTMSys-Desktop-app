@@ -58,48 +58,71 @@
    margin-top: 0.8rem;
    }
 
-   .product {
-   background: var(--clr-white);
-   border-radius: var(--card-radius);
-   overflow: hidden;
-   box-shadow: var(--shadow);
-   transition: transform 0.3s;
+.product {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* stack content normally */
+    width: 260px;
+    background: #228B73;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.25s ease;
+    cursor: pointer;
+    height: 340px;
+    padding: 10px;
+}
+
+.product img {
+   width: 100%;
+   height: 140px;      /* Adjust if you want it taller or shorter */
+   object-fit: cover;  /* Makes it crop nicely instead of stretching */
+   border-radius: 12px;/* Matches the rounded look in your screenshot */
+}
+
+.product:hover {
+   transform: translateY(-6px);
+}
+.product-info {
+   padding: 1rem 1.2rem;
    display: flex;
    flex-direction: column;
-   width: 160px;
-   height: 180px;
-   position: relative;
-   }
+   gap: 0.4rem;
+   height: auto;
+}
 
-   .product:hover {
-      transform: translateY(-5px);
-   }
+/* Title */
+.product-info h3 {
+   font-size: 1.05rem;
+   font-weight: 700;
+   color: #fff;
+   margin: 0;
+}
+.product-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* take remaining space */
+}
 
-   .product img {
-      width: 100%;
-      height: 100px;
-      object-fit: cover;
-      }
-
-   .product-info {
-      background: var(--clr-primary);
-      color: #fff;
-      padding: 0.5rem;
-      text-align: center;
-      flex: 1;
-      }
-   .product-info h3 {
-      font-size: 0.9rem;
-      margin: 0;
-      }
-   .product-info .price {
-      font-size: 0.8rem;
-      margin-top: 0.25rem;
-      }
+.product-info .price {
+    margin-top: auto; /* push only the price down */
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
 
    .stars {
       color: #FCFE01;
+      font-size: 1rem;
    }
+
+.product-location {
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   font-size: 0.85rem;
+   color: #fff;
+}
 
    /* Responsive */
    @media (max-width: 768px) {
@@ -163,4 +186,77 @@
    margin-top: 40px; /* height of titlebar */
    height: calc(100vh - 40px);
    overflow-y: auto;
+}
+
+/* Wrapper for side-by-side stat cards */
+.stats-wrapper {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+   gap: 2rem;
+   margin-bottom: 2rem;
+}
+
+/* Stat cards */
+.stat-card {
+   position: relative;
+   height: 180px;
+   padding: 2rem;
+   border-radius: 20px;
+   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   overflow: visible; /* Allow image to overflow outside */
+   color: #111;
+   transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* Gradients */
+.reservations-card {
+   background: linear-gradient(90deg, #D6C38B, #EED888);
+}
+
+.customers-card {
+   background: linear-gradient(90deg, #F7A531, #E5C91F);
+}
+
+/* Text styling */
+.stat-content h2 {
+   font-size: 1.3rem;
+   margin-bottom: 0.5rem;
+   font-weight: 700;
+}
+
+.stat-number {
+   font-size: 3rem;
+   font-weight: 700;
+}
+
+/* Stat card images */
+.stat-image {
+   position: absolute;
+   right: -20px; /* move slightly outside the card */
+   bottom: -20px; /* move slightly outside the card */
+   height: 160px;
+   pointer-events: none;
+   transform: rotate(0deg);
+   z-index: 1; /* make sure it appears above the card shadow */
+}
+
+
+/* Top products / packages section */
+.recent_order {
+   margin-top: 2rem;
+}
+
+.top-products {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+   gap: 1.5rem;
+   margin-top: 1rem;
 }

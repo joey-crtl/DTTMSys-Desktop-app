@@ -16,33 +16,38 @@ function highlightSidebar() {
 // Load feedbacks from MongoDB via preload.js
 async function loadFeedbacks() {
   try {
-    // Use the preload API
     const feedbacks = await window.api.getFeedbacks();
-    console.log('Fetched feedbacks:', feedbacks); // Check DevTools
-
-    const feedbackList = document.querySelector('.feedback-list');
+    const feedbackList = document.getElementById('feedbackList');
     feedbackList.innerHTML = '';
 
     if (!feedbacks || feedbacks.length === 0) {
-      feedbackList.innerHTML = '<p>No feedback available yet.</p>';
+      feedbackList.innerHTML = '<div class="card"><p>No feedback available yet.</p></div>';
       return;
     }
 
-    // Sort newest first
     feedbacks.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    // Render each feedback
     feedbacks.forEach(fb => {
-      const div = document.createElement('div');
-      div.classList.add('feedback-item');
-      div.innerHTML = `
-        <h3>${fb.name}</h3>
-        <p><strong>Email:</strong> ${fb.email}</p>
-        <p><strong>Feedback:</strong> ${fb.message}</p>
+      // Create Initials for the circle icon
+      const initials = fb.name ? fb.name.split(' ').map(n => n[0]).join('').substring(0, 2) : '?';
+      
+      // Format the date
+      const dateStr = fb.date ? new Date(fb.date).toLocaleDateString() : 'Recent';
+
+      const card = document.createElement('div');
+      card.classList.add('feedback-card');
+      card.innerHTML = `
+        <div class="fb-user-icon">${initials}</div>
+        <div class="fb-details">
+            <h3>${fb.name} <span class="fb-email">${fb.email}</span></h3>
+            <p class="fb-message">"${fb.message}"</p>
+        </div>
+        <div class="fb-date">${dateStr}</div>
       `;
-      feedbackList.appendChild(div);
+      feedbackList.appendChild(card);
     });
   } catch (err) {
     console.error('Failed to load feedbacks:', err);
+    document.getElementById('feedbackList').innerHTML = '<p>Error loading feedback.</p>';
   }
 }

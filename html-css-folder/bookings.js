@@ -19,26 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let bookings = [];
   let filteredBookings = [];
 
-  async function sendSMS(recipient, message) {
-    try {
-        const res = await fetch("https://app.philsms.com/api/v3/sms/send", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${PH_SMS_API_KEY}` // use the env key
-        },
-        body: JSON.stringify({
-            recipient: recipient,
-            message: message,
-            sender: "PhilSMS"
-        })
-        });
-        const data = await res.json();
-        console.log("✅ SMS sent:", data);
-    } catch (err) {
-        console.error("❌ SMS failed:", err);
-    }
-    }
+
 
   function formatDate(date) {
     if (!date) return "";
@@ -126,16 +107,19 @@ confirmScheduleBtn.onclick = async () => {
     const booking = selectedBooking;
 
     const dateTimeLocal = new Date(`${scheduleDateInput.value}T${scheduleTimeInput.value}`);
-    const formattedDateTime = new Date(dateTimeLocal.getTime() - dateTimeLocal.getTimezoneOffset() * 60000).toISOString();
+    const formattedDateTimeUTC = dateTimeLocal.toISOString();
 
     // Update travel date and create schedule
-    await window.api.updateBookingDate({ id: booking.id, travel_date: formattedDateTime });
+    await window.api.updateBookingDate({ id: booking.id, travel_date: formattedDateTimeUTC });
     await window.api.createSchedule({
       booking_id: booking.id,
       reference_id: booking.package_id || null,
       local_reference_id: booking.local_package_id || null,
-      travel_date: formattedDateTime
+      travel_date: formattedDateTimeUTC
     });
+
+    // Update local booking object
+    booking.travel_date = formattedDateTimeUTC;
 
     // Mark booking as FullyPaid
     const res = await window.api.updateBookingStatus({ id: booking.id, status: "FullyPaid" });
@@ -150,6 +134,7 @@ confirmScheduleBtn.onclick = async () => {
       table: booking.package_id ? "package_info" : "local_package_info"
     });
 
+
     // ---- SEND EMAILJS ----
     const emailParams = {
       to_email: booking.email,
@@ -162,19 +147,19 @@ confirmScheduleBtn.onclick = async () => {
       children: booking.children || 0,
     };
 
-    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", emailParams)
+    emailjs.send("service_26qqg9m", "template_477ij3u", emailParams)
       .then(() => console.log("✅ FullyPaid email sent successfully!"))
       .catch(err => console.error("❌ EmailJS error:", err));
     
-    const smsMessage = `Hello ${booking.full_name}, your booking for ${booking.package_name || "Unknown"} is now Fully Paid.
+          const smsMessage = `Hello ${booking.full_name}, your booking for ${booking.package_name || "Unknown"} is now Fully Paid.
     Travel Date: ${scheduleDateInput.value}.
     Ref ID: ${booking.reference_id || "N/A"}.
     Please wait for the official schedule that will be sent to your email.
     Thank you for choosing Doctor Travel and Tours!`;
 
-    sendSMS(booking.phone_number, smsMessage);
+          await window.api.sendSMS({ recipient: booking.phone_number, message: smsMessage });
 
-    scheduleModal.style.display = "none";
+    scheduleModal.classList.remove("show");
     loadBookings();
     document.dispatchEvent(new Event("bookingUpdated"));
     alert("✅ Schedule confirmed and FullyPaid status set!");
@@ -213,19 +198,28 @@ cancelScheduleBtn.addEventListener("click", () => {
 
       let paymentButtonsHTML = "";
 
-      if (b.status === "FullyPaid" || b.status === "Cancelled") {
-        paymentButtonsHTML = `
-          <button class="payment-btn full" disabled>Fully Paid</button>
-          <button class="payment-btn half" disabled>Half Paid</button>
-          <button class="payment-btn cancelled" disabled>Cancelled</button>
-        `;
-      } else {
-        paymentButtonsHTML = `
-          <button class="payment-btn full">Fully Paid</button>
-          <button class="payment-btn half" onclick="setPayment('${b.id}', 'HalfPaid')">Half Paid</button>
-          <button class="payment-btn cancelled" onclick="setPayment('${b.id}', 'Cancelled')">Cancelled</button>
-        `;
-      }
+    if (b.status === "FullyPaid" || b.status === "Cancelled") {
+      paymentButtonsHTML = `
+        <button class="payment-btn full" disabled>Fully Paid</button>
+        <button class="payment-btn half" disabled>Half Paid</button>
+        <button class="payment-btn cancelled" disabled>Cancelled</button>
+      `;
+    }
+    else if (b.status === "HalfPaid") {
+      paymentButtonsHTML = `
+        <button class="payment-btn full">Fully Paid</button>
+        <button class="payment-btn half" disabled>Half Paid</button>
+        <button class="payment-btn cancelled" disabled>Cancelled</button>
+      `;
+    }
+    else {
+      // Pending
+      paymentButtonsHTML = `
+        <button class="payment-btn full">Fully Paid</button>
+        <button class="payment-btn half" onclick="setPayment('${b.id}', 'HalfPaid')">Half Paid</button>
+        <button class="payment-btn cancelled" onclick="setPayment('${b.id}', 'Cancelled')">Cancelled</button>
+      `;
+    }
 
       row.innerHTML = `
         <td>${rowIndex}</td>
@@ -281,11 +275,24 @@ window.setPayment = async function (id, status) {
           .then(() => console.log("✅ FullyPaid email sent successfully!"))
           .catch(err => console.error("❌ EmailJS error:", err));
 
-        const smsMessage = `Hello ${booking.full_name}, your booking for ${booking.package_name || "Unknown"} is now Fully Paid. Travel Date: ${formatDate(booking.travel_date)}. Ref ID: ${booking.reference_id || "N/A"}.`;
-            sendSMS(booking.phone_number, smsMessage);
+          const smsMessage = `Hello ${booking.full_name}, your booking for ${booking.package_name || "Unknown"} is now Fully Paid. Travel Date: ${formatDate(booking.travel_date)}. Ref ID: ${booking.reference_id || "N/A"}.`;
+          await window.api.sendSMS({ recipient: booking.phone_number, message: smsMessage });
       }
 
-
+          if (status === "HalfPaid" && booking) {
+      try {
+        await window.api.sendHalfPaidEmail({
+          full_name: booking.full_name,
+          email: booking.email,
+          destination: booking.destination,
+          passengers: booking.passengers,
+          reference_id: booking.reference_id || "N/A"
+        });
+        console.log("✅ HalfPaid email sent");
+      } catch (err) {
+        console.warn("❌ HalfPaid email failed", err);
+      }
+    }
 
       if (booking) booking.status = status;
       renderBookings();

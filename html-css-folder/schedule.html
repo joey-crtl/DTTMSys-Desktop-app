@@ -13,16 +13,17 @@
    <!-- Icons & Fonts -->
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" />
    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </head>
 <body>
-   <div class="titlebar">
-      <div class="title">Dr. Travel & Tours Reservation System</div>
-      <div class="window-buttons">
-        <button onclick="api.minimize()">🗕</button>
-        <button onclick="api.maximize()">🗖</button>
-        <button onclick="api.close()">✖</button>
-      </div>
-   </div>
+  <div class="titlebar">
+    <div class="title">Dr. Travel & Tours Reservation System</div>
+    <div class="window-buttons">
+      <button onclick="api.minimize()"><iconify-icon icon="mdi:minimize"></iconify-icon></button>
+      <button onclick="api.maximize()"><iconify-icon icon="material-symbols-light:tab-group-outline-rounded"></iconify-icon></button>
+      <button onclick="api.close()"><iconify-icon icon="material-symbols-light:tab-close-outline-rounded"></button>
+    </div>
+  </div>
 
    <div class="scrollable-content">
       <div class="top-bar">
@@ -32,40 +33,57 @@
       <div class="container">
          <!-- Sidebar -->
          <aside class="aside">
-            <div class="top">
-               <div class="logo"><h2>Menu</h2></div>
-            </div>
             <div class="sidebar">
-               <a href="dashboard.html"><span class="material-symbols-sharp">grid_view</span><h3>Dashboard</h3></a>
-               <a href="package.html"><span class="material-symbols-sharp">luggage</span><h3>International Packages</h3></a>
-               <a href="local_package.html"><span class="material-symbols-sharp">luggage</span><h3>Local Packages</h3></a>
-               <a href="schedule.html" class="active"><span class="material-symbols-sharp">calendar_month</span><h3>Schedule</h3></a>
-               <a href="bookings.html"><span class="material-symbols-sharp">receipt_long</span><h3>Bookings</h3></a>
-               <a href="feedback.html"><span class="material-symbols-sharp">comment</span><h3>Feedback</h3></a>
-               <a href="blogs.html"><span class="material-symbols-sharp">article</span><h3>Blogs</h3></a>
+               <a href="dashboard.html"><iconify-icon icon="mingcute:grid-2-fill"></iconify-icon><h3>Dashboard</h3></a>
+               <a href="both-packages.html"><iconify-icon icon="ic:round-travel-explore"></iconify-icon><h3>Packages</h3></a>  
+               <a href="schedule.html" class="active"><iconify-icon icon="carbon:flight-schedule"></iconify-icon><h3>Schedule</h3></a>
+               <a href="bookings.html"><iconify-icon icon="mdi:book-marker-outline"></iconify-icon><h3>Reservations</h3></a>
+               <a href="feedback.html"><iconify-icon icon="hugeicons:chat-feedback-01"></iconify-icon><h3>Feedback</h3></a>
+               <a href="blogs.html"><iconify-icon icon="mdi:blog-outline"></iconify-icon><h3>Blogs</h3></a>
                <a href="#" onclick="logout()"><span class="material-symbols-sharp">logout</span><h3>Logout</h3></a>
             </div>
          </aside>
 
          <!-- Main Content -->
          <main>
-            <h1>Schedule</h1>
+         <h1>Schedule</h1>
 
-            <div class="table-container">
-               <table>
-                  <thead>
-                     <tr>
-                        <th>Passenger Name</th>
-                        <th>Package Name</th>
-                        <th>Reference ID</th>
-                        <th>Date</th>
-                     </tr>
-                  </thead>
-                  <tbody id="scheduleBody">
-                     <!-- Empty, ready for real data -->
-                  </tbody>
-               </table>
+         <!-- Controls (Search + Date) -->
+         <div class="controls">
+         <!-- Search -->
+         <div class="input-pill">
+            <iconify-icon icon="mdi:magnify"></iconify-icon>
+            <input
+               type="text"
+               id="searchBox"
+               placeholder="Search"
+            />
+         </div>
+
+         <!-- Date -->
+            <div class="input-pill date-pill">
+               <input type="date" id="dateFilter" />
+               <iconify-icon id="dateIcon" icon="line-md:calendar"></iconify-icon>
             </div>
+         </div>
+
+         <div class="table-container">
+            <table>
+               <thead>
+               <tr>
+                  <th>No.</th>
+                  <th>Name</th>
+                  <th>No. of Passengers</th>
+                  <th>Destination</th>
+                  <th>Package</th>
+                  <th>Date</th>
+               </tr>
+               </thead>
+               <tbody id="scheduleBody">
+               <!-- dynamic -->
+               </tbody>
+            </table>
+         </div>
          </main>
       </div>
    </div>

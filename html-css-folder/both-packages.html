@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packages - Admin Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="package.css">
+   <link rel="stylesheet" href="local_package.css">
+  <link rel="stylesheet" href="modal.css">
+  <link rel="stylesheet" href="navigation.css">
+
+<style>
+.top-controls {
+  opacity: 0;
+  visibility: hidden; /* Prevent early showing */
+  pointer-events: none;
+  display: none; 
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+
+.package-section {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0); 
+  transition: 0.3s ease;
+  display: none; /* hide by default */
+}
+
+.show-panel {
+  display: block; /* show section when active */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --- INTRO BUTTONS (LANDING) --- */
+#intro-buttons {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  pointer-events: none;
+  z-index: 10;
+  padding: 20px;
+  position: relative;
+  gap: 40px;
+}
+
+#intro-buttons button {
+  pointer-events: auto;
+  padding: 18px 40px; /* Kept your padding */
+  border-radius: 12px; /* Updated to Squircle */
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700; /* Bold as seen in design */
+  cursor: pointer;
+  transform-origin: center; /* Ensures it shrinks toward the middle */
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+}
+
+/* International: Solid Periwinkle */
+#startInternational {
+  background-color: #6c63ff; 
+  color: white;
+  border: 2px solid #6c63ff;
+}
+
+/* Domestic: Outlined */
+#startDomestic {
+  background: white;
+  color: #000000;
+  border: 2px solid #6c63ff;
+}
+
+.intro-btn:hover {
+  transform: translateY(-3px);
+  /* Added a matching glow for the hover state */
+  box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+}
+
+.intro-btn.fly {
+  opacity: 0;
+}
+
+#landing-hero-container {
+    position: absolute;
+    top: 50%;
+    left: 55%; /* Offset to account for sidebar */
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Space between picture and buttons */
+    z-index: 100;
+}
+
+#landing-illustration {
+    width: 500px; /* Adjust based on your preference */
+    height: auto;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Helper class to fade the image out when buttons are pressed */
+.fade-out-img {
+    opacity: 0 !important;
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+/* Ensure intro-buttons relative positioning is clean for the flight math */
+#intro-buttons {
+    position: relative;
+    display: flex;
+    gap: 40px;
+}
+
+/* --- TOP BUTTONS (DASHBOARD TABS) --- */
+.top-buttons button {
+  padding: 12px 30px;
+  border-radius: 12px; /* Updated to Squircle */
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+  border: 2px solid #6c63ff; /* Updated to Periwinkle */
+  transition: transform 0.8s ease, opacity 0.5s ease, background 0.3s ease, color 0.3s ease;
+}
+
+/* Active/Selected Tab State */
+.top-buttons button.active-btn,
+.top-buttons button.selected {
+  background: #6c63ff;
+  color: white;
+}
+
+/* Inactive Tab State */
+.top-buttons button:not(.active-btn) {
+  background: white;
+  color: #6c63ff;
+}
+
+.top-buttons button:hover {
+  background: #6c63ff;
+  color: white;
+}
+</style>
+
+  <!-- Icons & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+</head>
+<body>
+  <div class="titlebar">
+    <div class="title">Dr. Travel & Tours Reservation System</div>
+    <div class="window-buttons">
+      <button onclick="api.minimize()"><iconify-icon icon="mdi:minimize"></iconify-icon></button>
+      <button onclick="api.maximize()"><iconify-icon icon="material-symbols-light:tab-group-outline-rounded"></iconify-icon></button>
+      <button onclick="api.close()"><iconify-icon icon="material-symbols-light:tab-close-outline-rounded"></button>
+    </div>
+  </div>
+
+  <div class="scrollable-content">
+    <div class="top-bar">
+      <h1>Doctor Travel & Tours Reservation System</h1>
+    </div>
+
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="aside">
+        <div class="sidebar">
+          <a href="dashboard.html"><iconify-icon icon="mingcute:grid-2-fill"></iconify-icon><h3>Dashboard</h3></a>
+          <a href="both-packages.html" class="active"><iconify-icon icon="ic:round-travel-explore"></iconify-icon><h3>Packages</h3></a>
+          <a href="schedule.html"><iconify-icon icon="carbon:flight-schedule"></iconify-icon><h3>Schedule</h3></a>
+          <a href="bookings.html"><iconify-icon icon="mdi:book-marker-outline"></iconify-icon><h3>Reservations</h3></a>
+          <a href="feedback.html"><iconify-icon icon="hugeicons:chat-feedback-01"></iconify-icon><h3>Feedback</h3></a>
+          <a href="blogs.html"><iconify-icon icon="mdi:blog-outline"></iconify-icon><h3>Blogs</h3></a>
+          <a href="#" onclick="logout()"><iconify-icon icon="iconoir:log-out"></iconify-icon><h3>Logout</h3></a>
+        </div> 
+      </aside>
+  
+      <!-- Main content -->
+      <main>      
+      <div id="landing-hero-container">
+          <img src="img/undraw_world_bdnk 1.png" alt="Travel Illustration" id="landing-illustration">
+          
+          <div id="intro-buttons">
+              <button id="startInternational" class="intro-btn">International</button>
+              <button id="startDomestic" class="intro-btn">Domestic</button>
+          </div>
+      </div>
+
+      <div class="top-controls">
+          <div class="top-buttons">
+              <button id="button1" data-target="intl" class="active-btn">International</button>
+              <button id="button2" data-target="dom">Domestic</button>
+          </div>
+          </div>
+
+        <!-- Controls shared by both sections -->
+      <div class="controls">
+          <div class="search-wrapper">
+              <iconify-icon icon="material-symbols:search" class="search-icon"></iconify-icon>
+              <input type="text" id="searchBox" placeholder="Search Packages">
+          </div>
+          <button id="addPackageBtn">
+              <iconify-icon icon="fluent:slide-add-32-regular"></iconify-icon>
+              Add Package
+          </button>
+      </div>
+
+        <!-- Package grids -->
+        <div id="international-section" class="package-section">
+        <div class="package-grid" id="packageGrid"></div>
+        </div>
+
+        <div id="domestic-section" class="package-section">
+        <div class="package-grid" id="loc-packageGrid"></div>
+        </div>
+        
+        <!-- International Modal -->
+        <div id="packageDetailsModal" class="modal">
+          <div class="modal-content" id="packageDetailsContent">
+            <span class="modal-close" id="closeDetailsModal">&times;</span>
+            <div id="detailsPhotoContainer"></div>
+            <div id="detailsInfoContainer"></div>
+          </div>
+        </div>
+
+
+        <!-- Domestic Modal -->
+        <div id="loc-packageDetailsModal" class="modal">
+          <div class="modal-content" id="loc-packageDetailsContent">
+            <span class="modal-close" id="loc-closeDetailsModal">&times;</span>
+            <div id="loc-detailsPhotoContainer"></div>
+            <div id="loc-detailsInfoContainer"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <span class="modal-close" id="closeModal">&times;</span>
+        <h2>Confirm Logout</h2>
+        <p>Are you sure you want to log out?</p>
+        <div class="modal-buttons">
+          <button id="confirmBtn">Yes</button>
+          <button id="cancelBtn">No</button>
+        </div>
+      </div>
+    </div>
+
+<!-- International -->
+    <!-- Add Package Modal -->
+    <div id="addPackageModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" id="closeAddModal">&times;</span>
+        <h2>Add New Package</h2>
+        <form id="addPackageForm">
+          <!-- Row 1: Package Name | Price | Main Photo -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="pkgName">Package Name</label>
+              <input type="text" id="pkgName" required>
+            </div>
+            <div class="form-group">
+              <label for="pkgPrice">Price</label>
+              <input type="number" id="pkgPrice" placeholder="₱20,000" required>
+            </div>
+            <div class="form-group">
+              <label for="pkgMainPhoto">Main Photo</label>
+              <input type="file" id="pkgMainPhoto" accept="image/*" required>
+              <div id="mainPreviewContainer"></div>
+            </div>
+          </div>
+
+          <!-- Row 2: Additional Photos | Destination | Available -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="pkgPhoto">Additional Photos</label>
+              <input type="file" id="pkgPhoto" accept="image/*" multiple>
+              <div id="previewContainer"></div>
+            </div>
+            <div class="form-group">
+              <label for="pkgDestination">Destination</label>
+              <input type="text" id="pkgDestination" required>
+            </div>
+            <div class="form-group">
+              <label for="pkgAvailable">Available</label>
+              <input type="number" id="pkgAvailable" value="0" required>
+            </div>
+          </div>
+
+          <!-- Row 3: Description -->
+          <div class="form-row row-2">
+            <div class="form-group full-width">
+              <label for="pkgDescription">Description</label>
+              <textarea id="pkgDescription"></textarea>
+            </div>
+          </div>
+
+          <!-- Row 4: Itinerary -->
+          <div class="form-row row-1">
+            <div class="form-group">
+              <label>Itinerary</label>
+              <div id="itineraryBuilder" class="itinerary-builder"></div>
+              <button type="button" id="addDayBtn" class="itinerary-btn add">+ Add Day</button>
+              <input type="hidden" id="pkgItinerary">
+            </div>
+          </div>
+
+          <!-- Row 5: Inclusions | Exclusions -->
+          <div class="form-row row-2">
+            <div class="form-group">
+              <label for="pkgInclusions">Inclusions</label>
+              <textarea id="pkgInclusions"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="pkgExclusions">Exclusions</label>
+              <textarea id="pkgExclusions"></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-row row-1">
+            <button type="submit" class="btn-submit">Save Package</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Package Modal -->
+    <div id="editPackageModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Edit Package</h2>
+        <form id="editPackageForm">
+          <input type="hidden" id="editPkgId">
+
+          <!-- Row 1: Package Name | Price | Main Photo -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="editPkgName">Package Name</label>
+              <input type="text" id="editPkgName" required>
+            </div>
+            <div class="form-group">
+              <label for="editPkgPrice">Price</label>
+              <input type="number" id="editPkgPrice" required>
+            </div>
+            <div class="form-group">
+              <label for="editPkgMainPhoto">Main Photo</label>
+              <input type="file" id="editPkgMainPhoto" accept="image/*">
+              <div id="editMainPreviewContainer"></div>
+            </div>
+          </div>
+
+          <!-- Row 2: Additional Photos | Destination | Available -->
+          <div class="form-row row-3">
+            <div class="form-group">
+              <label for="editPkgPhoto">Additional Photos</label>
+              <input type="file" id="editPkgPhoto" multiple accept="image/*">
+              <div id="editPreviewContainer"></div>
+              <div id="editExistingPhotos"></div>
+            </div>
+            <div class="form-group">
+              <label for="editPkgDestination">Destination</label>
+              <input type="text" id="editPkgDestination">
+            </div>
+            <div class="form-group">
+              <label for="editPkgAvailable">Available</label>
+              <input type="number" id="editPkgAvailable" min="0">
+            </div>
+          </div>
+
+          <!-- Row 3: Description -->
+          <div class="form-row row-1">
+            <div class="form-group full-width">
+              <label>Description</label>
+              <textarea id="editPkgDescription"></textarea>
+            </div>
+          </div>
+
+          <!-- Row 4: Itinerary -->
+          <div class="form-row row-2">
+            <div class="form-group">
+              <label>Itinerary</label>
+              <div id="editItineraryBuilder" class="itinerary-builder"></div>
+              <button type="button" id="editAddDayBtn" class="itinerary-btn add">+ Add Day</button>
+              <input type="hidden" id="editPkgItinerary">
+            </div>
+          </div>
+
+          <!-- Row 5: Inclusions | Exclusions -->
+          <div class="form-row row-2">
+            <div class="form-group">
+              <label>Inclusions</label>
+              <textarea id="editPkgInclusions"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Exclusions</label>
+              <textarea id="editPkgExclusions"></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit">Update Package</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Photo Viewer Modal -->
+    <div id="photoViewerModal" class="modal">
+      <span id="closePhotoViewer">&times;</span>
+      <button id="prevPhoto" class="photo-nav">&lt;</button>
+      <div class="photo-viewer-container">
+        <img id="photoViewerImg" src="" alt="Photo Viewer">
+      </div>
+      <button id="nextPhoto" class="photo-nav">&gt;</button>
+    </div>
+
+<!-- Domestic-->
+      <!-- Add Package Modal -->
+  <div id="loc-addPackageModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" id="loc-closeAddModal">&times;</span>
+      <h2>Add New Local Package</h2>
+      <form id="loc-addPackageForm">
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-pkgName">Package Name</label>
+            <input type="text" id="loc-pkgName" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgPrice">Price</label>
+            <input type="number" id="loc-pkgPrice" placeholder="₱20,000" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgMainPhoto">Main Photo</label>
+            <input type="file" id="loc-pkgMainPhoto" accept="image/*" required>
+            <div id="loc-mainPreviewContainer"></div>
+          </div>
+        </div>
+
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-pkgPhoto">Additional Photos</label>
+            <input type="file" id="loc-pkgPhoto" accept="image/*" multiple>
+            <div id="loc-previewContainer"></div>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgDestination">Destination</label>
+            <input type="text" id="loc-pkgDestination" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgAvailable">Available</label>
+            <input type="number" id="loc-pkgAvailable" value="0" required>
+          </div>
+        </div>
+
+        <div class="form-row row-2">
+          <div class="form-group full-width">
+            <label for="loc-pkgDescription">Description</label>
+            <textarea id="loc-pkgDescription"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row row-1">
+          <div class="form-group">
+            <label>Itinerary</label>
+            <div id="loc-itineraryBuilder" class="itinerary-builder"></div>
+            <button type="button" id="loc-addDayBtn" class="itinerary-btn add">+ Add Day</button>
+            <input type="hidden" id="loc-pkgItinerary">
+          </div>
+        </div>
+
+
+        <div class="form-row row-2">
+          <div class="form-group">
+            <label for="loc-pkgInclusions">Inclusions</label>
+            <textarea id="loc-pkgInclusions"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="loc-pkgExclusions">Exclusions</label>
+            <textarea id="loc-pkgExclusions"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row row-1">
+          <button type="submit" class="btn-submit">Save Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Package Modal -->
+  <div id="loc-editPackageModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>Edit Local Package</h2>
+      <form id="loc-editPackageForm">
+        <input type="hidden" id="loc-editPkgId">
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-editPkgName">Package Name</label>
+            <input type="text" id="loc-editPkgName" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgPrice">Price</label>
+            <input type="number" id="loc-editPkgPrice" required>
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgMainPhoto">Main Photo</label>
+            <input type="file" id="loc-editPkgMainPhoto" accept="image/*">
+            <div id="loc-editMainPreviewContainer"></div>
+          </div>
+        </div>
+
+        <div class="form-row row-3">
+          <div class="form-group">
+            <label for="loc-editPkgPhoto">Additional Photos</label>
+            <input type="file" id="loc-editPkgPhoto" multiple accept="image/*">
+            <div id="loc-editPreviewContainer"></div>
+            <div id="loc-editExistingPhotos"></div>
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgDestination">Destination</label>
+            <input type="text" id="loc-editPkgDestination">
+          </div>
+          <div class="form-group">
+            <label for="loc-editPkgAvailable">Available</label>
+            <input type="number" id="loc-editPkgAvailable" min="0">
+          </div>
+        </div>
+
+        <div class="form-row row-1">
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea id="loc-editPkgDescription"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row row-2">
+          <div class="form-group">
+            <label>Itinerary</label>
+            <div id="loc-editItineraryBuilder" class="itinerary-builder"></div>
+            <button type="button" id="loc-editAddDayBtn" class="itinerary-btn add">+ Add Day</button>
+            <input type="hidden" id="loc-editPkgItinerary">
+          </div>
+        </div>
+
+        <div class="form-row row-2">
+          <div class="form-group">
+            <label>Inclusions</label>
+            <textarea id="loc-editPkgInclusions"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Exclusions</label>
+            <textarea id="loc-editPkgExclusions"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Update Package</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Photo Viewer Modal -->
+  <div id="loc-photoViewerModal" class="modal">
+    <span id="loc-closePhotoViewer">&times;</span>
+    <button id="loc-prevPhoto" class="photo-nav">&lt;</button>
+    <div class="photo-viewer-container">
+      <img id="loc-photoViewerImg" src="" alt="Photo Viewer">
+    </div>
+    <button id="loc-nextPhoto" class="photo-nav">&gt;</button>
+  </div>
+
+  <!-- JS -->
+  <script src="package.js"></script>
+  <script src="local_package.js"></script>
+  <script src="modal.js"></script>
+
+
+<script>
+  const introButtons = document.getElementById("intro-buttons");
+  const topControls = document.querySelector(".top-controls");
+  const internationalSec = document.getElementById("international-section");
+  const domesticSec = document.getElementById("domestic-section");
+
+  const startIntl = document.getElementById("startInternational");
+  const startDom = document.getElementById("startDomestic");
+
+  const intlBtn = document.getElementById("button1");
+  const domBtn = document.getElementById("button2");
+
+  const landingIllustration = document.getElementById("landing-illustration");
+  const landingContainer = document.getElementById("landing-hero-container");
+  const searchControls = document.querySelector(".controls");
+  
+
+  // Reveal UI from intro
+function revealUI(section) {
+    // 1. Immediately fade out the picture
+    landingIllustration.classList.add("fade-out-img");
+
+    // 2. Prepare containers but keep them invisible
+    topControls.style.display = "block";
+    // Do NOT add show-panel here yet
+
+    requestAnimationFrame(() => {
+      const getCenter = (el) => {
+        const rect = el.getBoundingClientRect();
+        return { 
+          x: rect.left + rect.width / 2, 
+          y: rect.top + rect.height / 2,
+          width: rect.width,
+          height: rect.height 
+        };
+      };
+
+      const startIntlInfo = getCenter(startIntl);
+      const intlBtnInfo = getCenter(intlBtn);
+      const startDomInfo = getCenter(startDom);
+      const domBtnInfo = getCenter(domBtn);
+
+      const moveIntlX = intlBtnInfo.x - startIntlInfo.x;
+      const moveIntlY = intlBtnInfo.y - startIntlInfo.y;
+      const moveDomX = domBtnInfo.x - startDomInfo.x;
+      const moveDomY = domBtnInfo.y - startDomInfo.y;
+
+      const scaleFactor = intlBtnInfo.height / startIntlInfo.height;
+
+      // 3. Apply the Flight animation
+      startIntl.style.transform = `translate(${moveIntlX}px, ${moveIntlY}px) scale(${scaleFactor})`;
+      startDom.style.transform = `translate(${moveDomX}px, ${moveDomY}px) scale(${scaleFactor})`;
+
+      // 4. Reveal Search Box and Tabs ONLY after the flight is finished
+      setTimeout(() => {
+        startIntl.classList.add("fly");
+        startDom.classList.add("fly");
+
+        topControls.classList.add("show-panel");
+        topControls.style.visibility = "visible";
+
+        searchControls.classList.add("show-panel");
+        searchControls.style.visibility = "visible";
+
+        // ✅ SHOW PACKAGES ONLY AFTER INTRO IS DONE
+        showSection(section);
+      }, 800);
+
+      // 5. Cleanup the landing container
+      setTimeout(() => {
+        landingContainer.style.display = "none";
+      }, 1300);
+    });
+
+  }
+
+  // Toggle between sections
+function showSection(section) {
+  const container = document.querySelector("main");
+
+  const currentVisible = document.querySelector(".package-section.show-panel");
+
+  let newSection;
+  if (section === "international") {
+    newSection = internationalSec;
+    intlBtn.classList.add("active-btn");
+    domBtn.classList.remove("active-btn");
+  } else {
+    newSection = domesticSec;
+    intlBtn.classList.remove("active-btn");
+    domBtn.classList.add("active-btn");
+  }
+
+  if (currentVisible === newSection) return; // already visible
+
+  // Fade out current
+  if (currentVisible) {
+    currentVisible.style.opacity = 0;
+    currentVisible.style.pointerEvents = "none";
+    setTimeout(() => {
+      currentVisible.classList.remove("show-panel");
+
+      // Insert new section in correct order
+      if (section === "international") {
+        container.insertBefore(internationalSec, domesticSec);
+      } else {
+        container.insertBefore(domesticSec, internationalSec);
+      }
+
+      // Fade in new section
+      newSection.classList.add("show-panel");
+      requestAnimationFrame(() => {
+        newSection.style.opacity = 1;
+        newSection.style.pointerEvents = "auto";
+      });
+    }, 300); // match CSS transition duration
+  } else {
+    // No current section (first reveal)
+    if (section === "international") container.insertBefore(internationalSec, domesticSec);
+    else container.insertBefore(domesticSec, internationalSec);
+
+    newSection.classList.add("show-panel");
+    requestAnimationFrame(() => {
+      newSection.style.opacity = 1;
+      newSection.style.pointerEvents = "auto";
+    });
+  }
+}
+
+  startIntl.addEventListener("click", () => revealUI("international"));
+  startDom.addEventListener("click", () => revealUI("domestic"));
+
+  intlBtn.addEventListener("click", () => showSection("international"));
+  domBtn.addEventListener("click", () => showSection("domestic"));
+
+  
+</script>
+
+</body>
+</html>

@@ -13,18 +13,19 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" />
    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
-
+   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+   
    <title>Dashboard</title>
 </head>
 <body>
-   <div class="titlebar">
-      <div class="title">Dr. Travel & Tours Reservation System</div>
-      <div class="window-buttons">
-        <button onclick="api.minimize()">🗕</button>
-        <button onclick="api.maximize()">🗖</button>
-        <button onclick="api.close()">✖</button>
-      </div>
-   </div>
+  <div class="titlebar">
+    <div class="title">Dr. Travel & Tours Reservation System</div>
+    <div class="window-buttons">
+      <button onclick="api.minimize()"><iconify-icon icon="mdi:minimize"></iconify-icon></button>
+      <button onclick="api.maximize()"><iconify-icon icon="material-symbols-light:tab-group-outline-rounded"></iconify-icon></button>
+      <button onclick="api.close()"><iconify-icon icon="material-symbols-light:tab-close-outline-rounded"></button>
+    </div>
+  </div>
 
    <div class="scrollable-content">
        <div class="top-bar">
@@ -33,16 +34,13 @@
 
    <div class="container">
       <aside class="aside">
-         <div class="top"><div class="logo"><h2>Menu</h2></div></div>
          <div class="sidebar">
-            <a href="dashboard.html" class="active"><span class="material-symbols-sharp">grid_view</span><h3>Dashboard</h3></a>
-            <a href="package.html"><span class="material-symbols-sharp">luggage</span><h3>International Packages</h3></a>
-            <a href="local_package.html"><span class="material-symbols-sharp">luggage</span><h3>Local Packages</h3></a>            
-            <a href="schedule.html"><span class="material-symbols-sharp">calendar_month</span><h3>Schedule</h3></a>
-            <a href="bookings.html"><span class="material-symbols-sharp">receipt_long</span><h3>Bookings</h3></a>
-            <a href="feedback.html"><span class="material-symbols-sharp">comment</span><h3>Feedback</h3></a>
-            <a href="blogs.html"><span class="material-symbols-sharp">article</span><h3>Blogs</h3></a>
-
+            <a href="dashboard.html" class="active"><iconify-icon icon="mingcute:grid-2-fill"></iconify-icon><h3>Dashboard</h3></a>
+            <a href="both-packages.html"><iconify-icon icon="ic:round-travel-explore"></iconify-icon><h3>Packages</h3></a>         
+            <a href="schedule.html"><iconify-icon icon="carbon:flight-schedule"></iconify-icon><h3>Schedule</h3></a>
+            <a href="bookings.html"><iconify-icon icon="mdi:book-marker-outline"></iconify-icon><h3>Reservations</h3></a>
+            <a href="feedback.html"><iconify-icon icon="hugeicons:chat-feedback-01"></iconify-icon><h3>Feedback</h3></a>
+            <a href="blogs.html"><iconify-icon icon="mdi:blog-outline"></iconify-icon><h3>Blogs</h3></a>
             <a href="#" onclick="logout()"><span class="material-symbols-sharp">logout</span><h3>Logout</h3></a>
          </div>
       </aside>
@@ -51,27 +49,21 @@
          <h1>Welcome, Admin</h1>
 
          <!-- Insights -->
-         <div class="insight">
-            <div class="card expenses">
-               <span class="material-symbols-sharp">book_online</span>
-               <div class="middle">
-                  <div class="left">
-                     <h3>Total Bookings</h3>
-                     <h1 id="totalBookings">0</h1>
-                  </div>
+         <div class="stats-wrapper">
+            <div class="stat-card reservations-card">
+               <div class="stat-content">
+                  <h2>Total Reservations</h2>
+                  <p class="stat-number" id="totalBookings">0</p>
                </div>
-               <small>This Month</small>
+               <img src="img/emojione_small-airplane.png" class="stat-image">
             </div>
 
-            <div class="card income">
-               <span class="material-symbols-sharp">groups</span>
-               <div class="middle">
-                  <div class="left">
-                     <h3>Active Customers</h3>
-                     <h1 id="activeCustomers">0</h1>
-                  </div>
+            <div class="stat-card customers-card">
+               <div class="stat-content">
+                  <h2>Registered Customers</h2>
+                  <p class="stat-number" id="activeCustomers">0</p>
                </div>
-               <small>Currently Registered</small>
+               <img src="img/undraw_people_ka7y 1.png" class="stat-image">
             </div>
          </div>
 

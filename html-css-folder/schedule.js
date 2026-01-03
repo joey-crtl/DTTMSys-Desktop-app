@@ -1,8 +1,15 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const scheduleBody = document.getElementById("scheduleBody");
   const searchBox = document.getElementById("searchBox");
+  const dateInput = document.getElementById("dateFilter");
+  const dateIcon = document.getElementById("dateIcon");
 
   let schedules = [];
+
+    dateIcon.addEventListener("click", () => {
+    dateInput.showPicker?.(); // modern method
+    dateInput.focus();        // fallback for some browsers
+  });
 
   // Fetch schedules from the backend
   async function loadSchedules() {
@@ -16,24 +23,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function renderTable(data) {
-    scheduleBody.innerHTML = "";
-    if (!data.length) {
-      scheduleBody.innerHTML = `<tr><td colspan="4">No schedules found</td></tr>`;
-      return;
-    }
+function renderTable(data) {
+  scheduleBody.innerHTML = "";
 
-    data.forEach((s) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${s.passenger_name || "Unknown"}</td>
-        <td>${s.package_name || "Unknown"}</td>
-        <td>${s.reference_id || "N/A"}</td>
-        <td>${formatDate(s.travel_date)}</td>
-      `;
-      scheduleBody.appendChild(row);
-    });
+  if (!data.length) {
+    scheduleBody.innerHTML = `
+      <tr>
+        <td colspan="6">No schedules found</td>
+      </tr>`;
+    return;
   }
+
+  data.forEach((s, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${s.passenger_name || "—"}</td>
+      <td>${s.passenger_count || 0}</td>
+      <td>${s.destination || "—"}</td>
+      <td>${s.package_name || "—"}</td>
+      <td>${formatDate(s.travel_date)}</td>
+    `;
+    scheduleBody.appendChild(row);
+  });
+}
 
   function formatDate(date) {
     if (!date) return "";

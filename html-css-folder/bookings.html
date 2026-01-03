@@ -23,16 +23,16 @@
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap"
     rel="stylesheet"
   />
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </head>
 
 <body>
-  <!-- Title bar -->
   <div class="titlebar">
-    <div class="title">Doctor Travel & Tours Reservation System</div>
+    <div class="title">Dr. Travel & Tours Reservation System</div>
     <div class="window-buttons">
-      <button onclick="api.minimize()">🗕</button>
-      <button onclick="api.maximize()">🗖</button>
-      <button onclick="api.close()">✖</button>
+      <button onclick="api.minimize()"><iconify-icon icon="mdi:minimize"></iconify-icon></button>
+      <button onclick="api.maximize()"><iconify-icon icon="material-symbols-light:tab-group-outline-rounded"></iconify-icon></button>
+      <button onclick="api.close()"><iconify-icon icon="material-symbols-light:tab-close-outline-rounded"></button>
     </div>
   </div>
 
@@ -45,18 +45,14 @@
     <div class="container">
       <!-- Sidebar -->
       <aside class="aside">
-        <div class="top">
-          <div class="logo"><h2>Menu</h2></div>
-        </div>
 
         <div class="sidebar">
-          <a href="dashboard.html"><span class="material-symbols-sharp">grid_view</span><h3>Dashboard</h3></a>
-          <a href="package.html"><span class="material-symbols-sharp">luggage</span><h3>International Packages</h3></a>
-          <a href="local_package.html"><span class="material-symbols-sharp">luggage</span><h3>Local Packages</h3></a>
-          <a href="schedule.html"><span class="material-symbols-sharp">calendar_month</span><h3>Schedule</h3></a>
-          <a href="bookings.html" class="active"><span class="material-symbols-sharp">receipt_long</span><h3>Bookings</h3></a>
-          <a href="feedback.html"><span class="material-symbols-sharp">comment</span><h3>Feedback</h3></a>
-          <a href="blogs.html"><span class="material-symbols-sharp">article</span><h3>Blogs</h3></a>
+          <a href="dashboard.html"><iconify-icon icon="mingcute:grid-2-fill"></iconify-icon><h3>Dashboard</h3></a>
+          <a href="both-packages.html"><iconify-icon icon="ic:round-travel-explore"></iconify-icon><h3>Packages</h3></a>  
+          <a href="schedule.html"><iconify-icon icon="carbon:flight-schedule"></iconify-icon><h3>Schedule</h3></a>
+          <a href="bookings.html" class="active"><iconify-icon icon="mdi:book-marker-outline"></iconify-icon><h3>Reservations</h3></a>
+          <a href="feedback.html"><iconify-icon icon="hugeicons:chat-feedback-01"></iconify-icon><h3>Feedback</h3></a>
+          <a href="blogs.html"><iconify-icon icon="mdi:blog-outline"></iconify-icon><h3>Blogs</h3></a>
           <a href="#" onclick="logout()"><span class="material-symbols-sharp">logout</span><h3>Logout</h3></a>
         </div>
       </aside>
@@ -139,12 +135,7 @@
 
   <!-- JS -->
   <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function(){
-        emailjs.init("tIRbjOPzlE_tlYGoB"); 
-    })();
-    const PH_SMS_API_KEY = "3376|MZHMSlndxpldcx1EkAUQeRpUMR2ypf6xO7t22hKm ";
-  </script>
+
   <script src="bookings.js"></script>
   <script src="modal.js"></script>
 </body>

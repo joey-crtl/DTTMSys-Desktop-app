@@ -33,7 +33,6 @@ contextBridge.exposeInMainWorld("api", {
   updateLocalPackage: (pkg) => ipcRenderer.invoke("updateLocalPackage", pkg),
 
     // ---------------- Blogs (Admin) ----------------
-// ---------------- Blogs (Admin) ----------------
 createBlog: (data) => ipcRenderer.invoke("create-blog", data),
 getBlogs: () => ipcRenderer.invoke("getBlogs"), 
 deleteBlog: (data) => ipcRenderer.invoke("deleteBlog", data), 
@@ -58,4 +57,8 @@ deleteBlog: (data) => ipcRenderer.invoke("deleteBlog", data),
 
   // ---------------- Feedbacks ----------------
   getFeedbacks: () => ipcRenderer.invoke("getFeedbacks"),
+
+  sendHalfPaidEmail: (booking) =>
+    ipcRenderer.invoke("send-halfpaid-email", booking),
+
 });
