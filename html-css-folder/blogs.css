@@ -141,3 +141,20 @@ textarea {
     opacity: 1;
   }
 }
+
+.logout-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#logoutModal .modal-content {
+  width: 320px;       /* smaller width */
+  max-width: 90%;     /* responsive for small screens */
+  padding: 1.5rem;    /* less padding */
+  gap: 10px;          /* reduce spacing inside */
+}
