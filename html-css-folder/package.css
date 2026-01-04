@@ -1,3 +1,7 @@
+:root {
+  --clr-danger: #e53935;
+}
+  
   main {
   position: relative;
   }
