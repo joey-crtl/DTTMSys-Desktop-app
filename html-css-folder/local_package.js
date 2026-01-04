@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Elements
   // -----------------------------
   const packageGrid = document.getElementById("loc-packageGrid");
-  const searchBox = document.getElementById("loc-searchBox");
-  const addBtn = document.getElementById("loc-addPackageBtn");
+  const searchBox = document.getElementById("searchBox");
+  const addBtn = document.getElementById("addPackageBtn");
 
   // Add Package Modal  
   const addPackageModal = document.getElementById("loc-addPackageModal");

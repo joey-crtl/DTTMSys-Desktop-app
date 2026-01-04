@@ -167,8 +167,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       packageGrid.appendChild(card);
 
       card.querySelector(".viewDetails").addEventListener("click", () => openDetailsModal(pkg.id));
-      card.querySelector(".edit").addEventListener("click", () => openEditModal(pkg.id));
-      card.querySelector(".delete").addEventListener("click", () => deletePackage(pkg.id));
+card.querySelector(".edit").addEventListener("click", () => {
+  window.internationalPackages.openEditModal(pkg.id);
+});
+
+card.querySelector(".delete").addEventListener("click", () => {
+  window.internationalPackages.deletePackage(pkg.id);
+});
     });
   }
 
@@ -356,7 +361,7 @@ function openDetailsModal(pkgId) {
   // -----------------------------
   // Edit Package
   // -----------------------------
-  window.openEditModal = async (id) => {
+async function openEditModal(id){
     const pkg = packages.find(p => p.id === id);
     if (!pkg) return;
 
@@ -489,6 +494,8 @@ function openDetailsModal(pkgId) {
       renderPackages(packages);
     } else alert("Failed to delete package: " + result.message);
   }
+
+window.internationalPackages = {openEditModal,deletePackage};
 
   // -----------------------------
   // Photo Viewer navigation
