@@ -153,8 +153,8 @@ textarea {
 }
 
 #logoutModal .modal-content {
-  width: 320px;       /* smaller width */
-  max-width: 90%;     /* responsive for small screens */
-  padding: 1.5rem;    /* less padding */
-  gap: 10px;          /* reduce spacing inside */
+  width: 320px;       
+  max-width: 90%;     
+  padding: 1.5rem;    
+  gap: 10px;          
 }
