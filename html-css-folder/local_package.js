@@ -274,7 +274,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // -----------------------------
   // Modal open/close (Add & Edit)
   // -----------------------------
-  addBtn.addEventListener("click", () => addPackageModal.classList.add("show"));
   closeAddModal.addEventListener("click", () => addPackageModal.classList.remove("show"));
   window.addEventListener("click", e => { if (e.target === addPackageModal) addPackageModal.classList.remove("show"); });
 

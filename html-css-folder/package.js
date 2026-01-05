@@ -274,7 +274,6 @@ function openDetailsModal(pkgId) {
   // -----------------------------
   // Add/Edit modals
   // -----------------------------
-  addBtn.addEventListener("click", () => addPackageModal.classList.add("show"));
   closeAddModal.addEventListener("click", () => addPackageModal.classList.remove("show"));
   window.addEventListener("click", e => { if (e.target === addPackageModal) addPackageModal.classList.remove("show"); });
 
